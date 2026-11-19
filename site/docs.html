@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Documentation - Term</title>
+  <meta name="description" content="How to use TermOne, TermTwo, TermThree and TermFour: sessions, split view, clipboard, extra keys, VNC, images, configuration and the tn package manager.">
+  <meta name="theme-color" content="#0F172A">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="favicon.svg" alt="" width="28" height="28">Term</a>
+      <nav class="nav" aria-label="Main">
+        <a href="index.html">Download</a>
+        <a href="docs.html" aria-current="page">Docs</a>
+        <a href="packages.html">Packages</a>
+        <a href="https://github.com/Term-org">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap docs">
+    <div class="hero">
+      <h1>Documentation</h1>
+      <p>Everything here applies to TermOne, TermTwo, TermThree and TermFour alike. Replace the application id with the one of your app.</p>
+    </div>
+
+    <ul class="toc">
+      <li><a href="#install">Installing</a></li>
+      <li><a href="#first-start">First start</a></li>
+      <li><a href="#sessions">Sessions and the menu</a></li>
+      <li><a href="#split">Split sessions</a></li>
+      <li><a href="#clipboard">Selecting and copying</a></li>
+      <li><a href="#clipboard-keyboard">Term clipboard keyboard</a></li>
+      <li><a href="#extra-keys">Extra keys</a></li>
+      <li><a href="#images">Inline images</a></li>
+      <li><a href="#vnc">VNC</a></li>
+      <li><a href="#config">Configuration</a></li>
+      <li><a href="#tn">The tn package manager</a></li>
+      <li><a href="#repositories">Repositories</a></li>
+      <li><a href="#layout">File layout</a></li>
+      <li><a href="#troubleshooting">Troubleshooting</a></li>
+    </ul>
+
+    <section id="install">
+      <h2>Installing</h2>
+      <p>Download the APK from the <a href="index.html#download">download section</a> or from the <a href="https://github.com/Term-org/TermApp/releases">Releases page</a>. Each release contains one APK per app and a <code>SHA256SUMS</code> file. To verify a download, put both files in one folder and run:</p>
+      <pre><code>sha256sum -c SHA256SUMS</code></pre>
+      <p>The apps need Android 8.0 or newer. They are separate applications with separate data, packages and settings.</p>
+    </section>
+
+    <section id="first-start">
+      <h2>First start</h2>
+      <p>The first start downloads the base system (bash, coreutils, apt and friends) from the TP releases, verifies its SHA-256 checksum and unpacks it into the app's private storage. A progress screen shows the steps. This happens once per app.</p>
+      <p>If the download fails, the screen offers <strong>Retry</strong> and <strong>Use system shell</strong>. The second option opens Android's own shell so the app stays usable, but without bash and apt.</p>
+      <p>The menu entry <strong>Reinstall bootstrap</strong> deletes everything under <code>$PREFIX</code>, including packages you installed, and downloads a fresh copy. Your home folder is kept.</p>
+    </section>
+
+    <section id="sessions">
+      <h2>Sessions and the menu</h2>
+      <p>Sessions are tabs at the top. Tap a tab to switch, tap <kbd>+</kbd> for a new session and <kbd>&#8942;</kbd> for the menu. A foreground notification keeps sessions alive when you leave the app; its <strong>Exit</strong> button closes everything.</p>
+      <p>Long-press a tab for <strong>Rename</strong> and <strong>Close</strong> (plus the split entries described below). When a process ends, the session prints a message and closes when you press Enter.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Menu entry</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td>New session</td><td>Opens another session.</td></tr>
+            <tr><td>Paste (system clipboard)</td><td>Pastes the Android clipboard. Bracketed paste is used when the program asks for it.</td></tr>
+            <tr><td>Paste (Term clipboard)</td><td>Pastes the newest entry of the Term clipboard.</td></tr>
+            <tr><td>Increase / Decrease font size</td><td>Changes the font size of all panes.</td></tr>
+            <tr><td>Reload config</td><td>Re-reads <code>~/.term/</code>: font, cursor, bell, tab position and extra keys.</td></tr>
+            <tr><td>Show VNC viewer / Disconnect VNC</td><td>Only shown while a VNC connection exists.</td></tr>
+            <tr><td>Enable Term clipboard keyboard</td><td>Opens Android's keyboard settings.</td></tr>
+            <tr><td>Switch keyboard</td><td>Opens Android's keyboard picker.</td></tr>
+            <tr><td>Reinstall bootstrap</td><td>See <a href="#first-start">First start</a>.</td></tr>
+            <tr><td>Exit and close all sessions</td><td>Stops every session and the service.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="split">
+      <h2>Split sessions</h2>
+      <p>Up to four sessions can be shown side by side.</p>
+      <ol class="steps">
+        <li>Long-press the tab of session 2 and choose <strong>Combine with...</strong>.</li>
+        <li>Pick session 1. Session 1 becomes the owner on the left and session 2 appears on the right.</li>
+        <li>Repeat with sessions 3 and 4 to add them to the same group.</li>
+      </ol>
+      <p>Two sessions are shown left and right. With three, the owner takes the whole left side and the other two are stacked on the right. With four, the screen is a 2&times;2 grid. The pane you touched last has a blue border and receives all input, extra keys and pastes. Tabs of one group share a coloured underline.</p>
+      <p>To split a group again, long-press the owner's tab and choose <strong>Eject all sessions</strong>. Long-press a member's tab and choose <strong>Eject from group</strong> to remove only that one. Closing the owner dissolves the group; closing a member only removes it from the group.</p>
+    </section>
+
+    <section id="clipboard">
+      <h2>Selecting and copying</h2>
+      <p>Long-press a word to select it, then drag the blue handles to extend the selection. The screen scrolls when you drag to the top or bottom edge. The bar above the terminal offers <strong>Copy</strong>, <strong>Select all</strong> and <strong>Cancel</strong>.</p>
+      <p><strong>Copy</strong> stores the text in the Term clipboard (a history of the last 10 copies), not in Android's clipboard. Programs can also fill it themselves with the OSC 52 escape sequence, which tmux and neovim use.</p>
+    </section>
+
+    <section id="clipboard-keyboard">
+      <h2>Term clipboard keyboard</h2>
+      <p>The Term clipboard keyboard types everything you copied into any other app.</p>
+      <ol class="steps">
+        <li>Open the menu and choose <strong>Enable Term clipboard keyboard</strong>, then switch on the keyboard named after your app (for example <em>TermOne Clipboard</em>).</li>
+        <li>In the other app, open a text field and switch keyboards with <strong>Switch keyboard</strong> or Android's keyboard button.</li>
+        <li>Pick an entry from the chips, then press <strong>Insert all</strong>.</li>
+      </ol>
+      <p>Long texts are inserted in chunks with a progress percentage. The keyboard also has Space, Backspace, Enter, <strong>Delete</strong> (removes the chosen entry) and <strong>Clear</strong> (removes all entries).</p>
+    </section>
+
+    <section id="extra-keys">
+      <h2>Extra keys</h2>
+      <p>The bar under the terminal has two rows. Swipe it to the left for the VNC row; the dots show the current page. A hardware keyboard works as well.</p>
+      <ul>
+        <li><kbd>CTRL</kbd>, <kbd>ALT</kbd>, <kbd>SHIFT</kbd> and <kbd>FN</kbd>: tap once to apply to the next key only (blue), tap twice quickly to lock (amber), tap again to release.</li>
+        <li>With <kbd>FN</kbd>: arrows become PageUp, PageDown, Home and End; the digits 1 to 0 send F1 to F10.</li>
+        <li>Arrow, PageUp and PageDown keys repeat while you hold them.</li>
+      </ul>
+      <h3>Layout file</h3>
+      <p>The layout is <code>~/.term/extrakeys.properties</code>. Each line is a comma-separated list of keys:</p>
+      <pre><code>row1=ESC,TAB,CTRL,ALT,SHIFT,UP,DOWN,HOME,END
+row2=LEFT,RIGHT,PGUP,PGDN,-,/,|,~,FN
+vnc-row=VNC_LEFT_CLICK,VNC_RIGHT_CLICK,VNC_MIDDLE_CLICK,VNC_SCROLL_UP,VNC_SCROLL_DOWN,VNC_KEYBOARD,VNC_FIT,VNC_CLOSE</code></pre>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Keys</th><th>Names</th></tr></thead>
+          <tbody>
+            <tr><td>Modifiers</td><td>CTRL, ALT, SHIFT, FN</td></tr>
+            <tr><td>Navigation</td><td>ESC, TAB, UP, DOWN, LEFT, RIGHT, HOME, END, PGUP, PGDN, INS, DEL, BKSP, ENTER</td></tr>
+            <tr><td>Function keys</td><td>F1 to F12</td></tr>
+            <tr><td>Actions</td><td>KEYBOARD (show or hide the keyboard), PASTE (paste the system clipboard), COMMA (a comma)</td></tr>
+            <tr><td>VNC</td><td>VNC_LEFT_CLICK, VNC_RIGHT_CLICK, VNC_MIDDLE_CLICK, VNC_SCROLL_UP, VNC_SCROLL_DOWN, VNC_KEYBOARD, VNC_FIT, VNC_CLOSE</td></tr>
+            <tr><td>Anything else</td><td>Typed literally, for example <code>-</code>, <code>/</code> or <code>|</code>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The <code>vnc-row</code> is split into two rows. Use <strong>Reload config</strong> in the menu after editing.</p>
+    </section>
+
+    <section id="images">
+      <h2>Inline images</h2>
+      <p>The terminal draws sixel graphics and iTerm2 inline images. It answers the terminal queries that image tools use for detection, so most of them work without configuration.</p>
+      <p>Any program that writes sixel to the terminal works. To show a file with the iTerm2 protocol from plain bash:</p>
+      <pre><code>printf '\033]1337;File=inline=1;width=auto:%s\a' "$(base64 -w0 image.png)"</code></pre>
+      <p>The <code>width</code> and <code>height</code> options accept cells, pixels (<code>200px</code>), percentages (<code>50%</code>) and <code>auto</code>. Images scroll with the text and disappear when text is written over them.</p>
+    </section>
+
+    <section id="vnc">
+      <h2>VNC</h2>
+      <p>The viewer is built in. It supports servers with no security or with VNC password authentication (passwords are limited to 8 characters by the protocol).</p>
+      <pre><code>terminal-vnc                      # start a server on display :1 and open the viewer
+terminal-vnc start -d 2 -g 1920x1080
+terminal-vnc open -H 192.168.1.10 -p 5901
+terminal-vnc status
+terminal-vnc stop</code></pre>
+      <p><code>start</code> needs a package that provides <code>vncserver</code> and <code>vncpasswd</code> (for example TigerVNC). <code>open</code> works with any VNC server you can reach. Connections to other hosts than the device itself ask for confirmation first.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Gesture</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td>Drag with one finger</td><td>Moves the pointer (like a trackpad)</td></tr>
+            <tr><td>Tap</td><td>Left click</td></tr>
+            <tr><td>Long-press, then drag</td><td>Drag with the left button held</td></tr>
+            <tr><td>Tap with two fingers</td><td>Right click</td></tr>
+            <tr><td>Drag with two fingers</td><td>Scroll</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>While the viewer is shown, the extra keys switch to the VNC row (LMB, RMB, MMB, scroll, keyboard, Fit, Close) and typing goes to the remote desktop. <strong>Fit</strong> toggles between fitting the screen and actual size. Back, another tab or a new session hides the viewer without disconnecting; <code>terminal-vnc open</code> or the menu brings it back. Text copied on the remote side lands in the Term clipboard.</p>
+    </section>
+
+    <section id="config">
+      <h2>Configuration</h2>
+      <p>Settings live in <code>~/.term/</code>. Edit them with any editor and choose <strong>Reload config</strong> in the menu.</p>
+      <h3>term.properties</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Key</th><th>Values</th><th>Default</th></tr></thead>
+          <tbody>
+            <tr><td><code>font-size</code></td><td>8 to 40 (sp)</td><td>14</td></tr>
+            <tr><td><code>cursor-style</code></td><td>block, underline, bar</td><td>block</td></tr>
+            <tr><td><code>cursor-blink</code></td><td>true, false</td><td>true</td></tr>
+            <tr><td><code>bell</code></td><td>vibrate, beep, ignore</td><td>vibrate</td></tr>
+            <tr><td><code>scrollback</code></td><td>100 to 50000 lines (applies to new sessions)</td><td>2000</td></tr>
+            <tr><td><code>session-tabs-top</code></td><td>true, false (false puts the tabs below the terminal)</td><td>true</td></tr>
+            <tr><td><code>bootstrap-url</code></td><td>https URL of a bootstrap zip (optional)</td><td>TP release of your app</td></tr>
+            <tr><td><code>bootstrap-sha256</code></td><td>64 hex digits (optional; otherwise <code>&lt;url&gt;.sha256</code> is downloaded)</td><td>none</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Font</h3>
+      <p>Put a monospaced TrueType font at <code>~/.term/term.ttf</code>. Without it the system monospace font is used.</p>
+    </section>
+
+    <section id="tn">
+      <h2>The tn package manager</h2>
+      <p><code>tn</code> is a friendly front end for apt and dpkg.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>tn update</code></td><td>Refresh the package lists</td></tr>
+            <tr><td><code>tn upgrade</code></td><td>Refresh the lists, then upgrade installed packages</td></tr>
+            <tr><td><code>tn install PKG...</code></td><td>Install packages</td></tr>
+            <tr><td><code>tn remove PKG...</code></td><td>Remove packages</td></tr>
+            <tr><td><code>tn purge PKG...</code></td><td>Remove packages and their configuration</td></tr>
+            <tr><td><code>tn autoremove</code></td><td>Remove packages that are no longer needed</td></tr>
+            <tr><td><code>tn search TERM</code></td><td>Search for packages</td></tr>
+            <tr><td><code>tn show PKG</code></td><td>Show package details</td></tr>
+            <tr><td><code>tn list</code></td><td>List packages (accepts apt list options)</td></tr>
+            <tr><td><code>tn files PKG</code></td><td>List the files a package installed</td></tr>
+            <tr><td><code>tn owns FILE</code></td><td>Find the package that owns a file</td></tr>
+            <tr><td><code>tn clean</code></td><td>Delete downloaded package files</td></tr>
+            <tr><td><code>tn doctor</code></td><td>Check the environment</td></tr>
+            <tr><td><code>tn version</code></td><td>Show the version</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>You can also use apt directly; <code>tn</code> simply adds repository management and the community switch below.</p>
+    </section>
+
+    <section id="repositories">
+      <h2>Repositories</h2>
+      <p>Every app is configured with the main repository (<a href="https://github.com/Term-org/TP">TP</a>):</p>
+      <pre><code>deb https://term-org.github.io/TP/&lt;applicationId&gt; stable main</code></pre>
+      <p>The community repository (<a href="https://github.com/Term-org/TCP">TCP</a>) is off by default because its recipes come from third parties. Switch it on with:</p>
+      <pre><code>tn community enable
+tn update</code></pre>
+      <p><code>tn community enable</code> explains the risk, asks for confirmation (use <code>-y</code> to skip it), downloads the signing key and adds the repository. <code>tn community disable</code> and <code>tn community status</code> do what they say.</p>
+      <h3>Other repositories</h3>
+      <pre><code>tn repo list
+tn repo add NAME URL [SUITE [COMPONENT]] [--keyring FILE]
+tn repo remove NAME
+tn repo enable NAME
+tn repo disable NAME</code></pre>
+      <p>Repository URLs must use https. Suite and component default to <code>stable</code> and <code>main</code>. With <code>--keyring</code> the key is stored and used only for that repository.</p>
+      <p>Browse the packages on the <a href="packages.html">packages page</a>.</p>
+    </section>
+
+    <section id="layout">
+      <h2>File layout</h2>
+      <p>Everything lives in the app's private internal storage, in the <code>files</code> folder of <code>/data/data/&lt;applicationId&gt;</code>:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Variable</th><th>Path</th></tr></thead>
+          <tbody>
+            <tr><td><code>$PREFIX</code></td><td><code>/data/data/&lt;applicationId&gt;/files/rootdir/usr</code></td></tr>
+            <tr><td><code>$HOME</code></td><td><code>/data/data/&lt;applicationId&gt;/files/rootdir/home</code></td></tr>
+            <tr><td><code>$TMPDIR</code></td><td><code>/data/data/&lt;applicationId&gt;/files/temp</code></td></tr>
+            <tr><td><code>$DOCS</code></td><td><code>/data/data/&lt;applicationId&gt;/files/docs</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The folder is not a real root file system. Uninstalling the app or clearing its data removes all of it.</p>
+    </section>
+
+    <section id="troubleshooting">
+      <h2>Troubleshooting</h2>
+      <ul>
+        <li><strong>"Setup failed: Unable to fetch ... (HTTP 404)"</strong>: no bootstrap has been published for your app and architecture yet. Retry later or use the system shell.</li>
+        <li><strong>"Checksum mismatch"</strong>: the download was corrupted or changed. Press Retry; the archive is never unpacked when the checksum is wrong.</li>
+        <li><strong><code>tn update</code> finds nothing</strong>: run <code>tn doctor</code> to see whether a repository is configured and the tools are present.</li>
+        <li><strong>VNC does not open</strong>: make sure a server is listening on the port, for example with <code>terminal-vnc status</code>.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Term-org &middot; <a href="index.html">Download</a> &middot; <a href="packages.html">Packages</a></div>
+  </footer>
+</body>
+</html>

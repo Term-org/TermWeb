@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Packages - Term</title>
+  <meta name="description" content="Browse the packages of the Term main and community repositories.">
+  <meta name="theme-color" content="#0F172A">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="favicon.svg" alt="" width="28" height="28">Term</a>
+      <nav class="nav" aria-label="Main">
+        <a href="index.html">Download</a>
+        <a href="docs.html">Docs</a>
+        <a href="packages.html" aria-current="page">Packages</a>
+        <a href="https://github.com/Term-org">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="hero">
+      <h1>Packages</h1>
+      <p>Everything you can install with <code>tn install</code>. The lists are read live from the repositories.</p>
+    </div>
+
+    <section>
+      <div class="controls">
+        <button class="button" type="button" data-repo="tp" aria-pressed="true">TP (main)</button>
+        <button class="button secondary" type="button" data-repo="tcp" aria-pressed="false">TCP (community)</button>
+        <select id="package-arch" aria-label="Architecture">
+          <option value="aarch64">aarch64</option>
+          <option value="x86_64">x86_64</option>
+        </select>
+        <input id="package-search" type="search" placeholder="Search packages" aria-label="Search packages" autocomplete="off">
+      </div>
+      <p class="muted" id="repo-note"></p>
+      <p class="status" id="package-status" role="status"></p>
+      <p><button class="button secondary" type="button" id="package-retry" hidden>Try again</button></p>
+      <p class="muted" id="package-count"></p>
+      <ul class="package-list" id="package-list"></ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Term-org &middot; The package set is the same for TermOne to TermFour; only the build differs.</div>
+  </footer>
+
+  <script src="assets/config.js"></script>
+  <script src="assets/packages.js"></script>
+</body>
+</html>

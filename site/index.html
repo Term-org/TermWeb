@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Term - a terminal for Android</title>
+  <meta name="description" content="TermOne, TermTwo, TermThree and TermFour: a terminal for Android built from scratch, with session tabs, split sessions, inline images, a built-in VNC viewer and its own package manager.">
+  <meta name="theme-color" content="#0F172A">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="prompt" viewBox="0 0 108 108">
+      <path d="M34 40 L52 54 L34 68" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M58 70 L76 70" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/>
+    </symbol>
+  </svg>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="favicon.svg" alt="" width="28" height="28">Term</a>
+      <nav class="nav" aria-label="Main">
+        <a href="index.html" aria-current="page">Download</a>
+        <a href="docs.html">Docs</a>
+        <a href="packages.html">Packages</a>
+        <a href="https://github.com/Term-org">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="hero">
+      <h1>A terminal for Android, built from scratch.</h1>
+      <p>Four independent apps (TermOne, TermTwo, TermThree and TermFour) with session tabs, split sessions, inline images, a built-in VNC viewer and its own package manager.</p>
+      <div class="actions">
+        <a class="button" href="#download">Download</a>
+        <a class="button secondary" href="docs.html">Read the docs</a>
+      </div>
+    </div>
+
+    <section id="download">
+      <h2>Download</h2>
+      <p class="muted">The four apps contain the same code. They differ only in application id, name and icon colour, and each one keeps its own data, so you can install several side by side.</p>
+      <div class="grid">
+        <article class="card">
+          <div class="app-icon" style="--icon-bg:#0F172A"><svg class="glyph" viewBox="0 0 108 108" aria-hidden="true"><use href="#prompt"/></svg></div>
+          <h3>TermOne</h3>
+          <p class="muted">app.term.one</p>
+          <a class="button" data-download="TermOne" href="https://github.com/Term-org/TermApp/releases/latest">Download APK</a>
+          <p class="meta" data-meta="TermOne"></p>
+        </article>
+        <article class="card">
+          <div class="app-icon" style="--icon-bg:#14532D"><svg class="glyph" viewBox="0 0 108 108" aria-hidden="true"><use href="#prompt"/></svg></div>
+          <h3>TermTwo</h3>
+          <p class="muted">app.term.two</p>
+          <a class="button" data-download="TermTwo" href="https://github.com/Term-org/TermApp/releases/latest">Download APK</a>
+          <p class="meta" data-meta="TermTwo"></p>
+        </article>
+        <article class="card">
+          <div class="app-icon" style="--icon-bg:#7C2D12"><svg class="glyph" viewBox="0 0 108 108" aria-hidden="true"><use href="#prompt"/></svg></div>
+          <h3>TermThree</h3>
+          <p class="muted">app.term.three</p>
+          <a class="button" data-download="TermThree" href="https://github.com/Term-org/TermApp/releases/latest">Download APK</a>
+          <p class="meta" data-meta="TermThree"></p>
+        </article>
+        <article class="card">
+          <div class="app-icon" style="--icon-bg:#4C1D95"><svg class="glyph" viewBox="0 0 108 108" aria-hidden="true"><use href="#prompt"/></svg></div>
+          <h3>TermFour</h3>
+          <p class="muted">app.term.four</p>
+          <a class="button" data-download="TermFour" href="https://github.com/Term-org/TermApp/releases/latest">Download APK</a>
+          <p class="meta" data-meta="TermFour"></p>
+        </article>
+      </div>
+      <p class="status" id="release-status" role="status"></p>
+      <p>
+        <a href="https://github.com/Term-org/TermApp/releases">All releases</a>
+        <span id="checksums-wrap"> &middot; <a id="checksums" href="https://github.com/Term-org/TermApp/releases/latest" hidden>SHA256SUMS</a></span>
+      </p>
+
+      <h3>Install</h3>
+      <ol class="steps">
+        <li>Download the APK of the app you want. It needs Android 8.0 or newer on a 64-bit ARM or x86_64 device.</li>
+        <li>Open the file and allow installing from this source when Android asks.</li>
+        <li>Start the app. The first start downloads the base system (bash, coreutils, apt) once, so you need an internet connection.</li>
+      </ol>
+      <p class="note">The apps are not on Google Play. They target Android API 28 on purpose, because newer targets are not allowed to run programs from the app's own storage, and a terminal needs that.</p>
+    </section>
+
+    <section>
+      <h2>Features</h2>
+      <div class="grid">
+        <div class="card feature"><h3>Session tabs</h3><p>Sessions sit in a bar above the terminal, so switching is one tap.</p></div>
+        <div class="card feature"><h3>Split sessions</h3><p>Combine up to four sessions side by side and eject them again with a long press.</p></div>
+        <div class="card feature"><h3>Inline images</h3><p>Sixel and iTerm2 (OSC 1337) images are drawn right in the terminal.</p></div>
+        <div class="card feature"><h3>Built-in VNC</h3><p>Run <code>terminal-vnc</code> and a viewer opens inside the app, with its own row of keys.</p></div>
+        <div class="card feature"><h3>Term clipboard</h3><p>Select long text, copy it, then insert all of it into any other app with the Term clipboard keyboard.</p></div>
+        <div class="card feature"><h3>Extra keys</h3><p>Two rows of keys, plus a VNC row one swipe to the left. The layout is a plain text file.</p></div>
+        <div class="card feature"><h3>Own package manager</h3><p><code>tn</code> wraps apt and manages repositories, including the community repository.</p></div>
+        <div class="card feature"><h3>Private storage</h3><p>Everything lives in the app's private internal storage. Nothing needs root.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>The projects</h2>
+      <ul>
+        <li><a href="https://github.com/Term-org/TermApp">TermApp</a>: the source of TermOne to TermFour.</li>
+        <li><a href="https://github.com/Term-org/TP">TP</a> (Term Packages): build system, bootstrap archives and the main apt repository.</li>
+        <li><a href="https://github.com/Term-org/TCP">TCP</a> (Term Community Packages): packages contributed by the community.</li>
+        <li><a href="https://github.com/Term-org/TermWeb">TermWeb</a>: this website.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">Term-org &middot; <a href="docs.html">Documentation</a> &middot; <a href="packages.html">Packages</a></div>
+  </footer>
+
+  <script src="assets/config.js"></script>
+  <script src="assets/releases.js"></script>
+</body>
+</html>
