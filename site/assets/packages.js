@@ -18,8 +18,8 @@
   var buttons = document.querySelectorAll("[data-repo]");
 
   var NOTES = {
-    tp: "The main repository is configured in every installation. Run tn update to refresh it.",
-    tcp: "Community packages come from third-party recipes. Run tn community enable once, then tn update."
+    tp: "The main repository is configured in every installation. Run tn gp:update to refresh it.",
+    tcp: "Community packages come from third-party recipes. Run tn tcp:activate once, then tn gp:update."
   };
 
   function indexUrl() {
@@ -93,7 +93,7 @@
       description.textContent = entry.description;
 
       var command = document.createElement("code");
-      command.textContent = "tn install " + entry.name;
+      command.textContent = "tn " + entry.name + ":install";
 
       item.append(head, description, command);
       fragment.appendChild(item);

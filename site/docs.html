@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Documentation - Term</title>
-  <meta name="description" content="How to use TermOne, TermTwo, TermThree and TermFour: sessions, split view, clipboard, extra keys, VNC, images, configuration and the tn package manager.">
+  <meta name="description" content="How to use TermOne, TermTwo, TermThree and TermFour: sessions, split view, links, search, clipboard, extra keys, VNC, images, themes, Android integration, configuration and the tn package manager.">
   <meta name="theme-color" content="#0F172A">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/style.css">
@@ -35,11 +35,18 @@
       <li><a href="#split">Split sessions</a></li>
       <li><a href="#clipboard">Selecting and copying</a></li>
       <li><a href="#clipboard-keyboard">Term clipboard keyboard</a></li>
+      <li><a href="#links">Links</a></li>
+      <li><a href="#search">Searching the scrollback</a></li>
+      <li><a href="#zoom-volume">Zoom and volume keys</a></li>
       <li><a href="#extra-keys">Extra keys</a></li>
       <li><a href="#images">Inline images</a></li>
       <li><a href="#vnc">VNC</a></li>
+      <li><a href="#android">Android integration</a></li>
+      <li><a href="#themes">Color themes</a></li>
+      <li><a href="#run-command">Commands from other apps</a></li>
       <li><a href="#config">Configuration</a></li>
       <li><a href="#tn">The tn package manager</a></li>
+      <li><a href="#tui">The tn interface</a></li>
       <li><a href="#repositories">Repositories</a></li>
       <li><a href="#layout">File layout</a></li>
       <li><a href="#troubleshooting">Troubleshooting</a></li>
@@ -61,8 +68,9 @@
 
     <section id="sessions">
       <h2>Sessions and the menu</h2>
-      <p>Sessions are tabs at the top. Tap a tab to switch, tap <kbd>+</kbd> for a new session and <kbd>&#8942;</kbd> for the menu. A foreground notification keeps sessions alive when you leave the app; its <strong>Exit</strong> button closes everything.</p>
-      <p>Long-press a tab for <strong>Rename</strong> and <strong>Close</strong> (plus the split entries described below). When a process ends, the session prints a message and closes when you press Enter.</p>
+      <p>Sessions are tabs at the top. Tap a tab to switch, tap <kbd>+</kbd> for a new session and <kbd>&#8942;</kbd> for the menu. A foreground notification keeps sessions alive when you leave the app. Its buttons are <strong>Wake lock</strong> and <strong>Exit</strong>.</p>
+      <p>Long-press a tab for <strong>Rename</strong> and <strong>Close</strong> (plus the split entries described below).</p>
+      <p>Typing <code>exit</code> or pressing <kbd>Ctrl</kbd>+<kbd>D</kbd> closes the session immediately, without pressing Enter, and stops every process that was started from it, including daemons that detached from the shell. When the last session closes, the app closes too. The only exception is a shell that fails to start; then the error stays on the screen so you can read it.</p>
       <div class="table-wrap">
         <table>
           <thead><tr><th>Menu entry</th><th>What it does</th></tr></thead>
@@ -71,8 +79,10 @@
             <tr><td>Paste (system clipboard)</td><td>Pastes the Android clipboard. Bracketed paste is used when the program asks for it.</td></tr>
             <tr><td>Paste (Term clipboard)</td><td>Pastes the newest entry of the Term clipboard.</td></tr>
             <tr><td>Increase / Decrease font size</td><td>Changes the font size of all panes.</td></tr>
-            <tr><td>Reload config</td><td>Re-reads <code>~/.term/</code>: font, cursor, bell, tab position and extra keys.</td></tr>
+            <tr><td>Reload config</td><td>Re-reads <code>~/.term/</code>: font, colors, cursor, bell, tab position and extra keys.</td></tr>
             <tr><td>Show VNC viewer / Disconnect VNC</td><td>Only shown while a VNC connection exists.</td></tr>
+            <tr><td>Search scrollback</td><td>See <a href="#search">Searching the scrollback</a>.</td></tr>
+            <tr><td>Maximize pane / Restore panes</td><td>Only shown while sessions are split. See <a href="#split">Split sessions</a>.</td></tr>
             <tr><td>Enable Term clipboard keyboard</td><td>Opens Android's keyboard settings.</td></tr>
             <tr><td>Switch keyboard</td><td>Opens Android's keyboard picker.</td></tr>
             <tr><td>Reinstall bootstrap</td><td>See <a href="#first-start">First start</a>.</td></tr>
@@ -91,12 +101,17 @@
         <li>Repeat with sessions 3 and 4 to add them to the same group.</li>
       </ol>
       <p>Two sessions are shown left and right. With three, the owner takes the whole left side and the other two are stacked on the right. With four, the screen is a 2&times;2 grid. The pane you touched last has a blue border and receives all input, extra keys and pastes. Tabs of one group share a coloured underline.</p>
-      <p>To split a group again, long-press the owner's tab and choose <strong>Eject all sessions</strong>. Long-press a member's tab and choose <strong>Eject from group</strong> to remove only that one. Closing the owner dissolves the group; closing a member only removes it from the group.</p>
+      <h3>Resizing the panes</h3>
+      <p>Drag the line between two panes. A small handle marks it. While you drag, only a preview line moves; the terminals change size when you lift your finger. In the 2&times;2 grid, dragging the crossing point moves both lines. Panes always keep between 20% and 80% of the space.</p>
+      <h3>Maximizing a pane</h3>
+      <p>Open the menu and choose <strong>Maximize pane</strong> to show only the active pane at full size. The other panes keep running. Switching to another tab of the group shows that session instead. Choose <strong>Restore panes</strong> to bring the split back.</p>
+      <h3>Splitting a group again</h3>
+      <p>Long-press the owner's tab and choose <strong>Eject all sessions</strong>. Long-press a member's tab and choose <strong>Eject from group</strong> to remove only that one. Closing the owner dissolves the group; closing a member only removes it from the group.</p>
     </section>
 
     <section id="clipboard">
       <h2>Selecting and copying</h2>
-      <p>Long-press a word to select it, then drag the blue handles to extend the selection. The screen scrolls when you drag to the top or bottom edge. The bar above the terminal offers <strong>Copy</strong>, <strong>Select all</strong> and <strong>Cancel</strong>.</p>
+      <p>Long-press a word to select it, then drag the blue handles to extend the selection. The screen scrolls when you drag to the top or bottom edge. While a selection exists, the bar that replaces the tabs offers <strong>Copy</strong>, <strong>Select all</strong> and <strong>Cancel</strong>, so nothing covers the text.</p>
       <p><strong>Copy</strong> stores the text in the Term clipboard (a history of the last 10 copies), not in Android's clipboard. Programs can also fill it themselves with the OSC 52 escape sequence, which tmux and neovim use.</p>
     </section>
 
@@ -109,6 +124,27 @@
         <li>Pick an entry from the chips, then press <strong>Insert all</strong>.</li>
       </ol>
       <p>Long texts are inserted in chunks with a progress percentage. The keyboard also has Space, Backspace, Enter, <strong>Delete</strong> (removes the chosen entry) and <strong>Clear</strong> (removes all entries).</p>
+      <p>From the shell, <code>term-clip</code> reads and writes the same history, see <a href="#android">Android integration</a>.</p>
+    </section>
+
+    <section id="links">
+      <h2>Links</h2>
+      <p>Tap a link in the terminal. Two kinds are recognised: hyperlinks that programs write with the OSC 8 escape sequence (they are underlined), and plain <code>http://</code> and <code>https://</code> addresses found in the text, even when the line was wrapped. A dialog shows the real address with <strong>Open</strong>, <strong>Copy</strong> and <strong>Cancel</strong>. The confirmation is always shown, because a hyperlink can display one text and lead somewhere else.</p>
+      <p>Links with the schemes <code>http</code>, <code>https</code>, <code>mailto</code>, <code>tel</code> and <code>geo</code> are accepted; anything else is ignored. <strong>Copy</strong> puts the address in the Term clipboard. While a program uses the mouse (for example vim with mouse support), taps go to that program instead.</p>
+      <p>To try it:</p>
+      <pre><code>printf '\033]8;;https://github.com/Term-org\033\\Term-org\033]8;;\033\\\n'</code></pre>
+    </section>
+
+    <section id="search">
+      <h2>Searching the scrollback</h2>
+      <p>Choose <strong>Search scrollback</strong> in the menu. A search bar replaces the tabs. Type to find text: matches are highlighted in the terminal, the current one in a brighter colour, and the counter shows the position, for example <code>3/12</code>. Use &#9650; and &#9660; (or Enter) to move between matches and &#10005; (or Back) to close the bar.</p>
+      <p>The search ignores letter case, starts at the newest match and covers the scrollback and the screen of the active pane. A match cannot span two wrapped lines.</p>
+    </section>
+
+    <section id="zoom-volume">
+      <h2>Zoom and volume keys</h2>
+      <p>Pinch with two fingers to change the font size of all panes (8 to 40). <strong>Reload config</strong> returns to the size in <code>term.properties</code>.</p>
+      <p>The volume keys work as modifiers while you hold them: <strong>volume down is Ctrl</strong> and <strong>volume up is Alt</strong>. Hold volume down and press <kbd>c</kbd> for Ctrl+C. The extra keys light up in blue while a volume key is held. Set <code>volume-keys=false</code> in <code>term.properties</code> to get the normal volume control back.</p>
     </section>
 
     <section id="extra-keys">
@@ -172,6 +208,69 @@ terminal-vnc stop</code></pre>
       <p>While the viewer is shown, the extra keys switch to the VNC row (LMB, RMB, MMB, scroll, keyboard, Fit, Close) and typing goes to the remote desktop. <strong>Fit</strong> toggles between fitting the screen and actual size. Back, another tab or a new session hides the viewer without disconnecting; <code>terminal-vnc open</code> or the menu brings it back. Text copied on the remote side lands in the Term clipboard.</p>
     </section>
 
+    <section id="android">
+      <h2>Android integration</h2>
+      <p>These commands talk to the app through escape sequences, so they also work over SSH or inside tmux only when the sequences get through (tmux needs <code>allow-passthrough</code>).</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>term-storage</code></td><td>Asks for the storage permission and links the shared folders into <code>~/storage</code> (<code>shared</code>, <code>downloads</code>, <code>dcim</code>, <code>pictures</code>, <code>music</code>, <code>movies</code> and <code>external-N</code> for removable storage).</td></tr>
+            <tr><td><code>term-open TARGET</code></td><td>Opens a link or a file with another app. Add <code>-t MIME</code> to force the type. The app asks for confirmation first.</td></tr>
+            <tr><td><code>term-share [FILE]</code></td><td>Shares a file, or the text from the standard input, with another app. Asks for confirmation first.</td></tr>
+            <tr><td><code>term-notify</code></td><td>Shows a notification: <code>term-notify -t Build "Finished"</code>. Options <code>-i ID</code> (replaces an earlier notification), <code>--ongoing</code> and <code>--remove</code>.</td></tr>
+            <tr><td><code>term-clip</code></td><td>Reads and writes the Term clipboard: <code>set</code>, <code>get [N]</code>, <code>list</code> and <code>clear</code>. Works in pipes: <code>git diff | term-clip set</code>.</td></tr>
+            <tr><td><code>term-wakelock on|off</code></td><td>Keeps the CPU and Wi-Fi awake while the screen is off. The notification shows the state and has a button for it. It is released when the last session closes.</td></tr>
+            <tr><td><code>term-theme</code></td><td>Lists and applies color themes, see <a href="#themes">Color themes</a>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><code>term-open</code> and <code>term-share</code> only accept files inside the app storage or the shared storage, and links with the schemes <code>http</code>, <code>https</code>, <code>mailto</code>, <code>tel</code> and <code>geo</code>. A program that prints the right escape sequence cannot open or share anything without you confirming it.</p>
+      <h3>The Files app</h3>
+      <p>Each app appears in Android's Files app (and in every other app that uses the system file picker) as a storage location, next to the other apps. It shows your home folder, and you can browse, open, create, rename and delete files there.</p>
+    </section>
+
+    <section id="themes">
+      <h2>Color themes</h2>
+      <p>Colors are read from <code>~/.term/colors.properties</code>. Without that file the default colors are used. Changes apply to every session right away.</p>
+      <pre><code>term-theme list           # available themes
+term-theme show dracula   # preview
+term-theme set dracula    # apply
+term-theme current
+term-theme reset          # back to the defaults</code></pre>
+      <p>Built-in themes: <code>default</code>, <code>dracula</code>, <code>nord</code>, <code>solarized-dark</code>, <code>solarized-light</code>, <code>gruvbox-dark</code>, <code>one-dark</code> and <code>tokyo-night</code>. Your own themes go in <code>~/.term/themes/NAME.properties</code> and show up in the list marked <em>custom</em>.</p>
+      <p>A theme is a list of colors as <code>#RRGGBB</code>. Every key is optional:</p>
+      <pre><code>foreground=#C0CAF5
+background=#1A1B26
+cursor=#C0CAF5
+color0=#15161E
+color1=#F7768E
+# ... up to color15</code></pre>
+    </section>
+
+    <section id="run-command">
+      <h2>Commands from other apps</h2>
+      <p>Other apps can run commands in the terminal through <code>RunCommandService</code>. It is off by default and needs two things:</p>
+      <ol class="steps">
+        <li>Set <code>allow-external-apps=true</code> in <code>~/.term/term.properties</code>.</li>
+        <li>The calling app declares the permission <code>&lt;applicationId&gt;.permission.RUN_COMMAND</code> and you grant it in Android's app settings.</li>
+      </ol>
+      <p>The caller starts the service <code>&lt;applicationId&gt;/app.term.one.RunCommandService</code> with <code>startForegroundService()</code> and these extras:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Extra</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><code>RUN_COMMAND_PATH</code></td><td>Absolute path of the program. It must be inside the prefix or the home folder.</td></tr>
+            <tr><td><code>RUN_COMMAND_ARGUMENTS</code></td><td>String array of arguments (at most 256).</td></tr>
+            <tr><td><code>RUN_COMMAND_WORKDIR</code></td><td>Working directory (default: the home folder).</td></tr>
+            <tr><td><code>RUN_COMMAND_BACKGROUND</code></td><td><code>true</code> (default) runs without a session and returns the output; <code>false</code> opens a visible session.</td></tr>
+            <tr><td><code>RUN_COMMAND_TIMEOUT_SECONDS</code></td><td>1 to 3600 (default 300), background mode only.</td></tr>
+            <tr><td><code>RUN_COMMAND_RESULT_PENDING_INTENT</code></td><td>Optional. Receives a bundle named <code>RESULT</code> with <code>stdout</code>, <code>stderr</code>, <code>exitCode</code> and <code>errmsg</code>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
     <section id="config">
       <h2>Configuration</h2>
       <p>Settings live in <code>~/.term/</code>. Edit them with any editor and choose <strong>Reload config</strong> in the menu.</p>
@@ -186,58 +285,95 @@ terminal-vnc stop</code></pre>
             <tr><td><code>bell</code></td><td>vibrate, beep, ignore</td><td>vibrate</td></tr>
             <tr><td><code>scrollback</code></td><td>100 to 50000 lines (applies to new sessions)</td><td>2000</td></tr>
             <tr><td><code>session-tabs-top</code></td><td>true, false (false puts the tabs below the terminal)</td><td>true</td></tr>
+            <tr><td><code>volume-keys</code></td><td>true, false (volume down is Ctrl, volume up is Alt)</td><td>true</td></tr>
+            <tr><td><code>allow-external-apps</code></td><td>true, false (see <a href="#run-command">Commands from other apps</a>)</td><td>false</td></tr>
+            <tr><td><code>bootstrap</code></td><td>boot, tp (which bootstrap to download; debug builds use boot, release builds use tp)</td><td>tp (boot in debug builds)</td></tr>
             <tr><td><code>bootstrap-url</code></td><td>https URL of a bootstrap zip (optional)</td><td>TP release of your app</td></tr>
             <tr><td><code>bootstrap-sha256</code></td><td>64 hex digits (optional; otherwise <code>&lt;url&gt;.sha256</code> is downloaded)</td><td>none</td></tr>
           </tbody>
         </table>
       </div>
       <h3>Font</h3>
-      <p>Put a monospaced TrueType font at <code>~/.term/term.ttf</code>. Without it the system monospace font is used.</p>
+      <p>Put a monospaced TrueType font at <code>~/.term/term.ttf</code>. Without it the system monospace font is used. Use a Nerd Font to get the icons that <code>tn</code> shows; without <code>term.ttf</code>, <code>tn</code> falls back to plain text.</p>
+      <h3>Shell configuration</h3>
+      <p>The app writes its own shell configuration to the system folder (see <a href="#layout">File layout</a>) on every start, and bash loads it first. It sets a short prompt (<code>~$</code> in your home folder, the folder name elsewhere), history and a few aliases, and at the end it loads <code>~/.bash_profile</code> and <code>~/.bashrc</code>. Both of your files are empty and belong entirely to you.</p>
     </section>
 
     <section id="tn">
       <h2>The tn package manager</h2>
-      <p><code>tn</code> is a friendly front end for apt and dpkg.</p>
+      <p><code>tn</code> is a front end for apt and dpkg. Run <code>tn</code> without arguments for the <a href="#tui">interface</a>, or use <code>package:action</code> on the command line.</p>
       <div class="table-wrap">
         <table>
           <thead><tr><th>Command</th><th>What it does</th></tr></thead>
           <tbody>
-            <tr><td><code>tn update</code></td><td>Refresh the package lists</td></tr>
-            <tr><td><code>tn upgrade</code></td><td>Refresh the lists, then upgrade installed packages</td></tr>
-            <tr><td><code>tn install PKG...</code></td><td>Install packages</td></tr>
-            <tr><td><code>tn remove PKG...</code></td><td>Remove packages</td></tr>
-            <tr><td><code>tn purge PKG...</code></td><td>Remove packages and their configuration</td></tr>
-            <tr><td><code>tn autoremove</code></td><td>Remove packages that are no longer needed</td></tr>
-            <tr><td><code>tn search TERM</code></td><td>Search for packages</td></tr>
-            <tr><td><code>tn show PKG</code></td><td>Show package details</td></tr>
-            <tr><td><code>tn list</code></td><td>List packages (accepts apt list options)</td></tr>
-            <tr><td><code>tn files PKG</code></td><td>List the files a package installed</td></tr>
-            <tr><td><code>tn owns FILE</code></td><td>Find the package that owns a file</td></tr>
-            <tr><td><code>tn clean</code></td><td>Delete downloaded package files</td></tr>
+            <tr><td><code>tn git:install</code></td><td>Install a package</td></tr>
+            <tr><td><code>tn "git;vim:install"</code></td><td>Install several packages</td></tr>
+            <tr><td><code>tn git:remove</code></td><td>Uninstall a package</td></tr>
+            <tr><td><code>tn git:purge</code></td><td>Uninstall and delete its configuration</td></tr>
+            <tr><td><code>tn git:details</code></td><td>Show the details of a package</td></tr>
+            <tr><td><code>tn git:upgrade</code></td><td>Upgrade one package</td></tr>
+            <tr><td><code>tn gp:upgrade</code></td><td>Refresh the lists and upgrade every package (<code>gp</code> means global packages)</td></tr>
+            <tr><td><code>tn git:freeze</code> / <code>tn git:unfreeze</code></td><td>Freeze a package so it cannot be used, and thaw it again</td></tr>
+            <tr><td><code>tn git:files</code></td><td>List the files of a package</td></tr>
+            <tr><td><code>tn editor:search</code></td><td>Search packages</td></tr>
+            <tr><td><code>tn gp:update</code></td><td>Refresh the package lists</td></tr>
+            <tr><td><code>tn gp:list</code></td><td>List installed packages</td></tr>
+            <tr><td><code>tn gp:clean</code></td><td>Delete downloaded package files</td></tr>
+            <tr><td><code>tn gp:autoremove</code></td><td>Remove packages that are no longer needed</td></tr>
             <tr><td><code>tn doctor</code></td><td>Check the environment</td></tr>
-            <tr><td><code>tn version</code></td><td>Show the version</td></tr>
+            <tr><td><code>tn -y ...</code></td><td>Do not ask for confirmation</td></tr>
           </tbody>
         </table>
       </div>
-      <p>You can also use apt directly; <code>tn</code> simply adds repository management and the community switch below.</p>
+      <p>Names can be separated with <code>;</code> or <code>,</code>. The shell treats an unquoted <code>;</code> as the end of the command, so write <code>tn "a;b:install"</code> or use <code>tn a,b:install</code> or <code>tn a b:install</code>.</p>
+      <h3>Freezing</h3>
+      <p>Freezing removes the execute permission from the programs of a package and puts the package on hold, so upgrades do not undo it. The libraries stay readable, so other packages that depend on them keep working. <code>unfreeze</code> restores everything. A frozen package cannot be removed until you unfreeze it, and the packages the system needs (bash, apt, dpkg, coreutils and a few more) cannot be frozen.</p>
+    </section>
+
+    <section id="tui">
+      <h2>The tn interface</h2>
+      <p>Run <code>tn</code> to open it. The package list is on the left. The right side shows the selected package in four tabs: <strong>Details</strong>, <strong>Source</strong> (which repository provides it), <strong>Readme</strong> (installed packages only) and <strong>Versions</strong>. Icons mark installed, upgradable and frozen packages.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Key</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td><kbd>&#8593;</kbd> <kbd>&#8595;</kbd> or <kbd>j</kbd> <kbd>k</kbd></td><td>Move in the list (<kbd>g</kbd> first, <kbd>G</kbd> last)</td></tr>
+            <tr><td><kbd>&#8592;</kbd> <kbd>&#8594;</kbd> or <kbd>h</kbd> <kbd>l</kbd>, <kbd>1</kbd> to <kbd>4</kbd></td><td>Switch tab</td></tr>
+            <tr><td>PgUp, PgDn</td><td>Scroll the right side</td></tr>
+            <tr><td><kbd>i</kbd></td><td>Install</td></tr>
+            <tr><td><kbd>x</kbd></td><td>Uninstall</td></tr>
+            <tr><td><kbd>U</kbd></td><td>Upgrade the package</td></tr>
+            <tr><td><kbd>f</kbd> / <kbd>z</kbd></td><td>Freeze / unfreeze</td></tr>
+            <tr><td><kbd>/</kbd></td><td>Filter the list (an empty text clears it; <kbd>Esc</kbd> also clears it)</td></tr>
+            <tr><td><kbd>r</kbd></td><td>Refresh the package lists</td></tr>
+            <tr><td><kbd>?</kbd></td><td>Help</td></tr>
+            <tr><td><kbd>q</kbd></td><td>Quit</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Install, uninstall, upgrade and refresh leave the interface for a moment to run apt, so you can answer its questions, and then return.</p>
     </section>
 
     <section id="repositories">
       <h2>Repositories</h2>
-      <p>Every app is configured with the main repository (<a href="https://github.com/Term-org/TP">TP</a>):</p>
+      <p>Every repository has a label. The main repository (<a href="https://github.com/Term-org/TP">TP</a>, label <code>tp</code>) is configured in every app and is always active:</p>
       <pre><code>deb https://term-org.github.io/TP/&lt;applicationId&gt; stable main</code></pre>
-      <p>The community repository (<a href="https://github.com/Term-org/TCP">TCP</a>) is off by default because its recipes come from third parties. Switch it on with:</p>
-      <pre><code>tn community enable
-tn update</code></pre>
-      <p><code>tn community enable</code> explains the risk, asks for confirmation (use <code>-y</code> to skip it), downloads the signing key and adds the repository. <code>tn community disable</code> and <code>tn community status</code> do what they say.</p>
+      <p>The community repository (<a href="https://github.com/Term-org/TCP">TCP</a>, label <code>tcp</code>) is off by default because its recipes come from third parties. Turn it on with:</p>
+      <pre><code>tn tcp:activate
+tn gp:update</code></pre>
+      <p>It explains the risk, asks for confirmation (<code>-y</code> skips it), downloads the signing key and adds the repository.</p>
       <h3>Other repositories</h3>
-      <pre><code>tn repo list
-tn repo add NAME URL [SUITE [COMPONENT]] [--keyring FILE]
-tn repo remove NAME
-tn repo enable NAME
-tn repo disable NAME</code></pre>
-      <p>Repository URLs must use https. Suite and component default to <code>stable</code> and <code>main</code>. With <code>--keyring</code> the key is stored and used only for that repository.</p>
-      <p>Browse the packages on the <a href="packages.html">packages page</a>.</p>
+      <pre><code>tn -c add https://example.com/repo -l mine -k https://example.com/key.gpg
+tn -c list
+tn mine:non-active
+tn mine:activate
+tn -c remove mine</code></pre>
+      <p><code>-c</code> can also be written <code>community</code> and <code>-l</code> as <code>-label</code>. A repository that you add is active right away; <code>label:non-active</code> and <code>label:activate</code> switch it off and on. The link must use https. <code>tn</code> checks that the repository exists, then:</p>
+      <ul>
+        <li>if it is signed, you must give its public key with <code>-k</code> (a link or a file);</li>
+        <li>if it is not signed, you are warned and asked for confirmation before it is added without verification.</li>
+      </ul>
+      <p>Optional flags: <code>-s</code> for the suite (default <code>stable</code>), <code>-m</code> for the component (default <code>main</code>) and <code>-y</code>. The labels <code>tp</code>, <code>tcp</code> and <code>gp</code> are reserved. Browse the packages on the <a href="packages.html">packages page</a>.</p>
     </section>
 
     <section id="layout">
@@ -245,10 +381,11 @@ tn repo disable NAME</code></pre>
       <p>Everything lives in the app's private internal storage, in the <code>files</code> folder of <code>/data/data/&lt;applicationId&gt;</code>:</p>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Variable</th><th>Path</th></tr></thead>
+          <thead><tr><th>Variable or folder</th><th>Path</th></tr></thead>
           <tbody>
             <tr><td><code>$PREFIX</code></td><td><code>/data/data/&lt;applicationId&gt;/files/rootdir/usr</code></td></tr>
             <tr><td><code>$HOME</code></td><td><code>/data/data/&lt;applicationId&gt;/files/rootdir/home</code></td></tr>
+            <tr><td><code>$TERM_SYSTEM_DIR</code></td><td><code>/data/data/&lt;applicationId&gt;/files/rootdir/system</code> (shell configuration and built-in themes, rewritten on every start)</td></tr>
             <tr><td><code>$TMPDIR</code></td><td><code>/data/data/&lt;applicationId&gt;/files/temp</code></td></tr>
             <tr><td><code>$DOCS</code></td><td><code>/data/data/&lt;applicationId&gt;/files/docs</code></td></tr>
           </tbody>
@@ -262,8 +399,10 @@ tn repo disable NAME</code></pre>
       <ul>
         <li><strong>"Setup failed: Unable to fetch ... (HTTP 404)"</strong>: no bootstrap has been published for your app and architecture yet. Retry later or use the system shell.</li>
         <li><strong>"Checksum mismatch"</strong>: the download was corrupted or changed. Press Retry; the archive is never unpacked when the checksum is wrong.</li>
-        <li><strong><code>tn update</code> finds nothing</strong>: run <code>tn doctor</code> to see whether a repository is configured and the tools are present.</li>
+        <li><strong><code>tn</code> finds no packages</strong>: run <code>tn gp:update</code> first, then <code>tn doctor</code> to see whether a repository is active and the tools are present.</li>
+        <li><strong>Boxes instead of icons in <code>tn</code></strong>: the font has no icon glyphs. Put a Nerd Font at <code>~/.term/term.ttf</code>, or run <code>TN_ASCII=1 tn</code> for plain text.</li>
         <li><strong>VNC does not open</strong>: make sure a server is listening on the port, for example with <code>terminal-vnc status</code>.</li>
+        <li><strong>A command from another app is refused</strong>: check <code>allow-external-apps=true</code> and the <code>RUN_COMMAND</code> permission.</li>
       </ul>
     </section>
   </main>
