@@ -24,52 +24,30 @@ jobs:
       - name: Check local references
         run: python3 scripts/check-links.py
 
-  deploy:
-    name: Deploy
+  build:
+    name: Build site
     needs: check
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
     permissions:
-      contents: read
       pages: write
       id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-
-
-      - name: Verify site directory
-        run: |
-          test -d site || {
-            echo "::error::Directory site/ does not exist"
-            exit 1
-          }
-
-          test -f site/index.html || {
-            echo "::error::site/index.html does not exist"
-            exit 1
-          }
-
-          echo "Site files:"
-          find site -maxdepth 2 -type f | head -100
-
-      - name: Upload site
-        id: upload
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
-
-      - name: Verify upload result
-        run: |
-          echo "Artifact ID: ${{ steps.upload.outputs.artifact_id }}"
-          test -n "${{ steps.upload.outputs.artifact_id }}"
-
-
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
